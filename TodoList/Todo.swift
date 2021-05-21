@@ -16,6 +16,7 @@ struct Todo: Codable, Equatable {
     var detail: String
     var isToday: Bool
     
+    // 구조체의 메서드가 구조체 내부에서 데이터 수정 할때는 mutating 키워드를 선언 해주어야함
     mutating func update(isDone: Bool, detail: String, isToday: Bool) {
         // TODO: update 로직 추가 완료
         self.isDone = isDone
@@ -38,22 +39,29 @@ class TodoManager {
     var todos: [Todo] = []
     
     func createTodo(detail: String, isToday: Bool) -> Todo {
-        //TODO: create로직 추가
+        //TODO: create로직 추가 완료
+        let nextId = TodoManager.lastId + 1
+        TodoManager.lastId = nextId
         return Todo(id: 1, isDone: false, detail: "2", isToday: true)
     }
     
     func addTodo(_ todo: Todo) {
-        //TODO: add로직 추가
+        //TODO: add로직 추가 완료
+        todos.append(todo)
+        saveTodo()
     }
     
     func deleteTodo(_ todo: Todo) {
-        //TODO: delete 로직 추가
-        
+        //TODO: delete 로직 추가 완료
+        todos = todos.filter { $0.id != todo.id }
+        saveTodo()
     }
     
     func updateTodo(_ todo: Todo) {
-        //TODO: updatee 로직 추가
-        
+        //TODO: updatee 로직 추가 완료
+        guard let index = todos.firstIndex(of: todo) else { return }
+        todos[index].update(isDone: todo.isDone, detail: todo.detail, isToday: todo.isToday)
+        saveTodo()
     }
     
     func saveTodo() {
